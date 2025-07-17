@@ -1,0 +1,88 @@
+*jpc-hpe.txt*  Experimental Lua plugin for Neovim
+
+==============================================================================
+Table of Contents                                   *jpc-hpe-table-of-contents*
+
+1. Introduction .................... |jpc-hpe-introduction|
+2. Installation .................... |jpc-hpe-installation|
+3. Configuration ................... |jpc-hpe-configuration|
+4. Commands ........................ |jpc-hpe-commands|
+5. API ............................ |jpc-hpe-api|
+6. License ........................ |jpc-hpe-license|
+
+==============================================================================
+1. Introduction                                        *jpc-hpe-introduction*
+
+JPC-HPE is an experimental Lua plugin for Neovim. This plugin serves as a
+sandbox for experimentation with Neovim's Lua API.
+
+==============================================================================
+2. Installation                                        *jpc-hpe-installation*
+
+You can install this plugin using your favorite plugin manager:
+
+* With packer.nvim:
+>
+    use {
+      'jpc-hpe/nvim.plugin',
+      config = function()
+        require('jpc-hpe').setup{}
+      end
+    }
+<
+
+* With lazy.nvim:
+>
+    {
+      'jpc-hpe/nvim.plugin',
+      config = function()
+        require('jpc-hpe').setup{}
+      end
+    }
+<
+
+* With vim-plug:
+>
+    Plug 'jpc-hpe/nvim.plugin'
+<
+    After installation, include in your configuration:
+>
+    lua require('jpc-hpe').setup{}
+<
+
+==============================================================================
+3. Configuration                                      *jpc-hpe-configuration*
+
+You can configure the plugin by passing options to the setup function:
+>
+    require('jpc-hpe').setup({
+      enabled = true,
+      -- Add more configuration options as needed
+    })
+<
+
+==============================================================================
+4. Commands                                                *jpc-hpe-commands*
+
+*:JpcHpeHello*  - Display a hello message from the plugin
+
+==============================================================================
+5. API                                                        *jpc-hpe-api*
+
+*require('jpc-hpe').setup(opts)*
+  Initialize the plugin with the given options.
+  Parameters:
+    • {opts} - Table of configuration options (optional)
+
+*require('jpc-hpe').hello_world()*
+  Display a hello message.
+
+==============================================================================
+6. License                                                *jpc-hpe-license*
+
+MIT License
+Copyright (c) 2025 Juan Postlbauer
+See LICENSE file for details.
+
+==============================================================================
+vim:ft=help:tw=78:ts=8:noet:fen:fdm=marker:
