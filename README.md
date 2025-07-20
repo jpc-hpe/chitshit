@@ -1,6 +1,9 @@
-# jpc-hpe Neovim Plugin
+# cheetah Neovim Plugin
 
 An experimental Lua plugin for Neovim.
+
+Self-note: I renamed the plugin to `cheetah` for easier replacement later. But both in this readme and in the doc/cheetah.txt file there is a still a reference to testplugin.vim because this is the repository name today.
+TODO: fix once repository has a final name
 
 ## Features
 
@@ -14,9 +17,9 @@ An experimental Lua plugin for Neovim.
 
 ```lua
 use {
-  'jpc-hpe/nvim.plugin',
+  'jpc-hpe/testplugin.nvim',
   config = function()
-    require('jpc-hpe').setup{}
+    require('cheetah').setup{}
   end
 }
 ```
@@ -25,9 +28,9 @@ use {
 
 ```lua
 {
-  'jpc-hpe/nvim.plugin',
+  'jpc-hpe/testplugin.nvim',
   config = function()
-    require('jpc-hpe').setup{}
+    require('cheetah').setup{}
   end
 }
 ```
@@ -35,12 +38,12 @@ use {
 ### Using [vim-plug](https://github.com/junegunn/vim-plug)
 
 ```vim
-Plug 'jpc-hpe/nvim.plugin'
+Plug 'jpc-hpe/testplugin.nvim'
 ```
 
 After installation, include in your configuration:
 ```lua
-require('jpc-hpe').setup{}
+require('cheetah').setup{}
 ```
 
 ## Configuration
@@ -48,7 +51,7 @@ require('jpc-hpe').setup{}
 You can configure the plugin by passing options to the setup function:
 
 ```lua
-require('jpc-hpe').setup({
+require('cheetah').setup({
   enabled = true,
   -- Add more configuration options as needed
 })
@@ -56,12 +59,12 @@ require('jpc-hpe').setup({
 
 ## Commands
 
-- `:JpcHpeHello` - Display a hello message from the plugin
+- `:CheetahHello` - Display a hello message from the plugin
 
 ## API
 
-- `require('jpc-hpe').setup(opts)` - Initialize the plugin with options
-- `require('jpc-hpe').hello_world()` - Display a hello message
+- `require('cheetah').setup(opts)` - Initialize the plugin with options
+- `require('cheetah').hello_world()` - Display a hello message
 
 ## License
 

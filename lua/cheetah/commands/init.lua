@@ -1,10 +1,10 @@
--- Commands implementation for jpc-hpe plugin
-local utils = require('jpc-hpe.utils')
+-- Commands implementation for cheetah plugin
+local utils = require('cheetah.utils')
 local M = {}
 
 -- Example command implementation
 function M.hello_command()
-  utils.print_message("Hello from jpc-hpe plugin command!")
+  utils.print_message("Hello from cheetah plugin command!")
 end
 
 -- Add more commands as needed

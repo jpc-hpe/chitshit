@@ -1,7 +1,7 @@
--- Main module for jpc-hpe Neovim plugin
+-- Main module for cheetah Neovim plugin
 local M = {}
-local utils = require('jpc-hpe.utils')
-local commands = require('jpc-hpe.commands')
+local utils = require('cheetah.utils')
+local commands = require('cheetah.commands')
 
 -- Default configuration
 M.config = {
@@ -23,7 +23,7 @@ function M.setup(opts)
   -- Initialize the plugin
   if M.config.enabled then
     -- Add initialization code here
-    utils.print_message("jpc-hpe plugin initialized")
+    utils.print_message("cheetah plugin initialized")
   end
 end
 

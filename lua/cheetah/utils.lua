@@ -1,10 +1,10 @@
--- Utility functions for the jpc-hpe plugin
+-- Utility functions for the cheetah plugin
 local M = {}
 
 -- Simple utility function to print a formatted message
 function M.print_message(msg, level)
   level = level or "info"
-  local prefix = "[jpc-hpe] "
+  local prefix = "[cheetah] "
   
   if level == "error" then
     vim.api.nvim_err_writeln(prefix .. msg)
