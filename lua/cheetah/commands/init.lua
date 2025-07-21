@@ -5,6 +5,9 @@ local M = {}
 -- Example command implementation
 function M.hello_command()
   utils.print_message("Hello from cheetah plugin command!")
+  utils.print_message("warning from cheetah plugin command!", "warn")
+  utils.print_message("error from cheetah plugin command!", "error")
+  utils.print_message("info from cheetah plugin command!", "info")
 end
 
 -- Add more commands as needed
