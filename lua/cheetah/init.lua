@@ -11,6 +11,17 @@ M.config = {
 
 -- Setup function to be called by the user
 function M.setup(opts)
+  -- Write current timestamp to /tmp/myflag file
+  local timestamp = os.date("%Y-%m-%d %H:%M:%S")
+  local file = io.open("/tmp/myflag", "w")
+  if file then
+    file:write("Cheetah plugin setup called at: " .. timestamp)
+    file:close()
+    utils.print_message("DEBUG: Wrote timestamp to /tmp/myflag", "warn")
+  else
+    utils.print_message("DEBUG: Failed to write to /tmp/myflag", "error")
+  end
+
   -- Merge user config with defaults
   opts = opts or {}
   M.config = vim.tbl_deep_extend("force", M.config, opts)
