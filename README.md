@@ -28,11 +28,10 @@ use {
 
 ```lua
 {
-  'jpc-hpe/testplugin.nvim',
-  config = function()
-    require('cheetah').setup{}
-  end
-}
+  "jpc-hpe/testplugin.nvim",
+  name="cheetah",
+  opts = {},
+}    
 ```
 
 ### Using [vim-plug](https://github.com/junegunn/vim-plug)

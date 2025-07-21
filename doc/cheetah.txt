@@ -4,7 +4,7 @@
 Table of Contents                                   *cheetah-table-of-contents*
 
 1. Introduction .................... |cheetah-introduction|
-2. Installation .................... |cheetah-sinstallation|
+2. Installation .................... |cheetah-installation|
 3. Configuration ................... |cheetah-configuration|
 4. Commands ........................ |cheetah-commands|
 5. API ............................ |cheetah-api|
@@ -17,7 +17,7 @@ cheetah is an experimental Lua plugin for Neovim. This plugin serves as a
 sandbox for experimentation with Neovim's Lua API.
 
 ==============================================================================
-2. Installation                                        *cheetah-sinstallation*
+2. Installation                                        *cheetah-installation*
 
 You can install this plugin using your favorite plugin manager:
 
@@ -34,11 +34,10 @@ You can install this plugin using your favorite plugin manager:
 * With lazy.nvim:
 >
     {
-      'jpc-hpe/testplugin.nvim',
-      config = function()
-        require('cheetah').setup{}
-      end
-    }
+      "jpc-hpe/testplugin.nvim",
+      name="cheetah",
+      opts = {},
+    }     
 <
 
 * With vim-plug:

@@ -11,17 +11,6 @@ M.config = {
 
 -- Setup function to be called by the user
 function M.setup(opts)
-  -- Write current timestamp to /tmp/myflag file
-  local timestamp = os.date("%Y-%m-%d %H:%M:%S")
-  local file = io.open("/tmp/myflag", "w")
-  if file then
-    file:write("Cheetah plugin setup called at: " .. timestamp)
-    file:close()
-    utils.print_message("DEBUG: Wrote timestamp to /tmp/myflag", "warn")
-  else
-    utils.print_message("DEBUG: Failed to write to /tmp/myflag", "error")
-  end
-
   -- Merge user config with defaults
   opts = opts or {}
   M.config = vim.tbl_deep_extend("force", M.config, opts)
@@ -33,23 +22,7 @@ function M.setup(opts)
   
   -- Initialize the plugin
   if M.config.enabled then
-    -- Generate helptags automatically when the plugin is setup
-    local doc_path = vim.fn.fnamemodify(debug.getinfo(1, 'S').source:sub(2), ':h:h:h') .. '/doc'
-    
-    -- Debug info before generating helptags
-    utils.print_message("DEBUG: Attempting to generate helptags for path: " .. doc_path, "warn")
-    utils.print_message("DEBUG: Directory exists: " .. tostring(vim.fn.isdirectory(doc_path) == 1), "warn")
-    
-    if vim.fn.isdirectory(doc_path) == 1 then
-      utils.print_message("DEBUG: Running helptags command now...", "warn")
-      vim.cmd('silent! helptags ' .. doc_path)
-      utils.print_message("DEBUG: Helptags command completed", "warn")
-    else
-      utils.print_message("DEBUG: Doc directory not found, skipping helptags", "warn")
-    end
-    
     -- Add initialization code here
-    utils.print_message("cheetah plugin initialized")
   end
 end
 
