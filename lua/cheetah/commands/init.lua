@@ -15,7 +15,7 @@ function M.hello_command()
 end
 
 function get_keymaps()
-  local keymaps = vim.api.nvim_get_keymap() -- Get keymaps for all modes
+  local keymaps = vim.api.nvim_get_keymap("a") -- Get keymaps for all modes
   for _, map in ipairs(keymaps) do
     print("Keymap:")
     for key, value in pairs(map) do
