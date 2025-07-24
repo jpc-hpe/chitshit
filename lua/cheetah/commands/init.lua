@@ -16,33 +16,36 @@ end
 
 function get_keymaps()
   local keymaps = vim.api.nvim_get_keymap("a") -- Get keymaps for all modes
+
+  for _, map in ipairs(keymaps) do
+    if map.callback and type(map.callback) == "function" then
+      local info = debug.getinfo(map.callback, "S")
+      if info then
+        local funcName = debug.getinfo(map.callback, "n").name
+        map.decoded_callback = string.format("function defined in %s at line %s, name: %s", 
+          info.short_src or "unknown source", 
+          info.linedefined or "unknown", 
+          funcName or "unknown")
+      else
+        map.decoded_callback = string.format("  %s: function: %s", key, tostring(value))
+      end
+    end
+  end
   for _, map in ipairs(keymaps) do
     print("Keymap:")
     for key, value in pairs(map) do
-      if key == "callback" and type(value) == "function" then
-        -- Try to get more info about the function
-        local info = debug.getinfo(value, "S")
-        if info then
-          print(string.format("  %s: function defined in %s at line %s", 
-            key, info.short_src or "unknown source", info.linedefined or "unknown"))
-          
-          -- Try to get the function name
-          local funcName = debug.getinfo(value, "n").name
-          if funcName then
-            print(string.format("  function name: %s", funcName))
-          end
-        else
-          print(string.format("  %s: function: %s", key, tostring(value)))
-        end
+      -- Skip printing lhsraw and lhsrawalt
+      if key == "lhsraw" or key == "lhsrawalt" then
+        -- Skip these fields
       else
         print(string.format("  %s: %s", key, tostring(value)))
       end
     end
     print("-------------------")
   end
-end
 
 -- Add more commands as needed
+end
 
 -- Return the module
 return M
