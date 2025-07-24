@@ -9,7 +9,7 @@ function M.hello_command()
   -- utils.print_message("warning from cheetah plugin command!", "warn")
   -- utils.print_message("error from cheetah plugin command!", "error")
   -- utils.print_message("info from cheetah plugin command!", "info")
-  -- get_keymaps()
+  get_keymaps()
 
   
 end
@@ -17,7 +17,11 @@ end
 function get_keymaps()
   local keymaps = vim.api.nvim_get_keymap() -- Get keymaps for all modes
   for _, map in ipairs(keymaps) do
-    print(string.format("Key: %s, Command: %s", map.lhs, map.rhs))
+    print("Keymap:")
+    for key, value in pairs(map) do
+      print(string.format("  %s: %s", key, value))
+    end
+    print("-------------------")
   end
 end
 
