@@ -2,6 +2,37 @@
 local utils = require('cheetah.utils')
 local M = {}
 
+-- Function to convert mode_bits to a string representation
+function M.decode_mode_bits(mode_bits)
+  if not mode_bits or type(mode_bits) ~= "number" then
+    return ""
+  end
+  
+  local modes = ""
+  local mode_map = {
+    [0x01] = "n", -- Normal
+    [0x02] = "x", -- Visual
+    [0x04] = "o", -- Operator-pending
+    [0x08] = "c", -- Command-line
+    [0x10] = "i", -- Insert
+    [0x20] = "l", -- Language
+    [0x40] = "s", -- Select
+    [0x80] = "t"  -- Terminal
+  }
+  
+  -- Use Neovim's bit library for Lua 5.1 compatibility
+  local bit = require("bit")
+  
+  for bit_value, char in pairs(mode_map) do
+    -- Bitwise AND operation using Lua 5.1 bit library
+    if bit.band(mode_bits, bit_value) ~= 0 then
+      modes = modes .. char
+    end
+  end
+  
+  return modes
+end
+
 -- Example command implementation
 function M.hello_command()
   print("Just using print")
@@ -9,18 +40,38 @@ function M.hello_command()
   -- utils.print_message("warning from cheetah plugin command!", "warn")
   -- utils.print_message("error from cheetah plugin command!", "error")
   -- utils.print_message("info from cheetah plugin command!", "info")
-  get_keymaps()
+  M.get_keymaps()
 
   
 end
 
-function get_keymaps()
+function M.get_keymaps()
   local keymaps = vim.api.nvim_get_keymap("a") -- Get keymaps for all modes
 
   for _, map in ipairs(keymaps) do
-    -- Remove lhsraw and lhsrawalt fields if present
+    -- Remove irrelevant fields, maybe later we reactivate some
     map.lhsraw = nil
     map.lhsrawalt = nil
+    map.silent = nil -- silent flag
+    map.sid = nil -- remove sid field if present
+    map.scriptversion = nil -- remove script version if present
+    map.script = nil -- remove script field if present
+    map.replace_keycodes = nil -- remove replace_keycodes field if present
+    map.nowait = nil -- remove nowait field if present
+    map.noremap = nil -- remove noremap field if present
+    map.lnum = nil -- remove lnum field if present
+    map.expr = nil -- remove expr field if present
+    map.abbr= nil -- remove abbrev field if present
+    map.buffer = nil -- remove buffer field if present
+    
+    -- Add modes field based on mode_bits
+    if map.mode_bits then
+      map.modes = M.decode_mode_bits(map.mode_bits)
+    else
+      map.modes = map.mode
+    end
+    map.mode = nil -- Remove mode field to avoid redundancy
+    map.mode_bits = nil -- Remove mode_bits field to avoid redundancy
     
     if map.callback and type(map.callback) == "function" then
       local info = debug.getinfo(map.callback, "S")
@@ -33,10 +84,11 @@ function get_keymaps()
         map.decoded_callback = string.format("%s", tostring(value))
       end
     end
+    map.callback = nil -- Remove callback field to avoid redundancy
   end
   
   -- Save keymaps to CSV
-  save_keymaps_to_csv(keymaps, "/mnt/c/_a/insta/keymaps.csv")
+  M.save_keymaps_to_csv(keymaps, "/mnt/c/_a/insta/keymaps.csv")
   
   for _, map in ipairs(keymaps) do
     print("Keymap:")
@@ -55,14 +107,19 @@ function get_keymaps()
 end
 
 -- Function to escape CSV values
-local function escape_csv_value(value)
+function M.escape_csv_value(value)
   if value == nil then
     return "NONE"
   end
   
   value = tostring(value)
-  -- Check if value starts with = (formula protection) or contains quotes, commas, or newlines
-  if value:match('^=') or value:match('[",%c]') then
+  -- Check if value starts with = (formula protection)
+  if value:match('^=') then
+    -- Prefix with single quote to prevent formula execution
+    value = "'" .. value
+  end
+  -- Check if value contains quotes, commas, or newlines
+  if value:match('[",%c]') then
     -- Replace double quotes with double double quotes and wrap in quotes
     value = '"' .. value:gsub('"', '""') .. '"'
   end
@@ -71,7 +128,7 @@ local function escape_csv_value(value)
 end
 
 -- Function to save keymaps to CSV file
-function save_keymaps_to_csv(keymaps, filepath)
+function M.save_keymaps_to_csv(keymaps, filepath)
   -- Collect all possible field names
   local all_fields = {}
   for _, map in ipairs(keymaps) do
@@ -95,7 +152,7 @@ function save_keymaps_to_csv(keymaps, filepath)
   for _, map in ipairs(keymaps) do
     local row = {}
     for _, field in ipairs(all_fields) do
-      table.insert(row, escape_csv_value(map[field]))
+      table.insert(row, M.escape_csv_value(map[field]))
     end
     table.insert(csv_lines, table.concat(row, ","))
   end
