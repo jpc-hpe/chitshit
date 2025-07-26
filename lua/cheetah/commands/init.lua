@@ -89,21 +89,49 @@ function M.get_keymaps()
       map.best_descr = map.decoded_callback
     end
   end
-  -- Save keymaps to CSV
-  M.save_keymaps_to_csv(keymaps, "/mnt/c/_a/insta/keymaps.csv")
-  
+   
+  -- create reduced keymap list containing only modes, display_lhs and best_descr
+  local reduced_keymaps = {}  
   for _, map in ipairs(keymaps) do
-    --print("Keymap:")
-    for key, value in pairs(map) do
-      -- Skip printing lhsraw and lhsrawalt
-      if key == "lhsraw" or key == "lhsrawalt" then
-        -- Skip these fields
-      else
-        -- print(string.format("  %s: %s", key, tostring(value)))
-      end
-    end
-    --print("-------------------")
+    local reduced_map = {
+      modes = map.modes,
+      display_lhs = map.display_lhs,
+      best_descr = map.best_descr
+    }
+    table.insert(reduced_keymaps, reduced_map)
   end
+  -- Consolidate entries with same display_lhs and best_descr
+  local consolidated_keymaps = {}
+  local seen_combinations = {}
+  
+  for _, map in ipairs(reduced_keymaps) do
+    local key = (map.display_lhs or "") .. "|" .. (map.best_descr or "")
+    
+    if seen_combinations[key] then
+      -- Combine modes with existing entry
+      local existing_entry = seen_combinations[key]
+      if map.modes and map.modes ~= "" then
+        if existing_entry.modes and existing_entry.modes ~= "" then
+          existing_entry.modes = existing_entry.modes .. map.modes
+        else
+          existing_entry.modes = map.modes
+        end
+      end
+    else
+      -- Create new entry
+      local new_entry = {
+        modes = map.modes,
+        display_lhs = map.display_lhs,
+        best_descr = map.best_descr
+      }
+      seen_combinations[key] = new_entry
+      table.insert(consolidated_keymaps, new_entry)
+    end
+  end
+  
+  -- Save keymaps to CSV
+  M.save_keymaps_to_csv(consolidated_keymaps, "/mnt/c/_a/insta/keymaps.csv")
+ 
 
 -- Add more commands as needed
 end
@@ -126,6 +154,9 @@ function M.escape_csv_value(value)
     value = '"' .. value:gsub('"', '""') .. '"'
   end
   
+  -- Replace semicolons with <semicolon> - required by Excel to prevent CSV parsing issues
+  value = value:gsub(";", "<semicolon>")
+  
   return value
 end
 
@@ -141,11 +172,16 @@ function M.save_keymaps_to_csv(keymaps, filepath)
     end
   end
   
-  -- Sort fields for consistent output
-  table.sort(all_fields)
-  
-  -- Override with only the allowed fields for now
-  all_fields = {"modes", "display_lhs", "best_descr", "display_rhs", "desc", "decoded_callback"}
+  -- Custom sorting: prioritize specific fields, then sort the rest alphabetically
+  local prioritized_fields = {"modes", "display_lhs", "best_descr"}
+  local remaining_fields = {}
+  for _, field in ipairs(all_fields) do
+    if not vim.tbl_contains(prioritized_fields, field) then
+      table.insert(remaining_fields, field)
+    end
+  end
+  table.sort(remaining_fields)
+  all_fields = vim.list_extend(prioritized_fields, remaining_fields)
   
   -- Create CSV content
   local csv_lines = {}
