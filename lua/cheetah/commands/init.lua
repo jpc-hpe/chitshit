@@ -35,44 +35,39 @@ end
 
 -- Example command implementation
 function M.hello_command()
-  print("Just using print")
   utils.print_message("Hello cheetah!") -- same as info level
   -- utils.print_message("warning from cheetah plugin command!", "warn")
   -- utils.print_message("error from cheetah plugin command!", "error")
   -- utils.print_message("info from cheetah plugin command!", "info")
+  --print("Just using print")
   M.get_keymaps()
 
   
 end
 
 function M.get_keymaps()
+  local leader = vim.api.nvim_get_var("mapleader")
+  local escaped_leader = leader:gsub("([^%w])", "%%%1")
+
+
+  
   local keymaps = vim.api.nvim_get_keymap("a") -- Get keymaps for all modes
 
   for _, map in ipairs(keymaps) do
-    -- Remove irrelevant fields, maybe later we reactivate some
-    map.lhsraw = nil
-    map.lhsrawalt = nil
-    map.silent = nil -- silent flag
-    map.sid = nil -- remove sid field if present
-    map.scriptversion = nil -- remove script version if present
-    map.script = nil -- remove script field if present
-    map.replace_keycodes = nil -- remove replace_keycodes field if present
-    map.nowait = nil -- remove nowait field if present
-    map.noremap = nil -- remove noremap field if present
-    map.lnum = nil -- remove lnum field if present
-    map.expr = nil -- remove expr field if present
-    map.abbr= nil -- remove abbrev field if present
-    map.buffer = nil -- remove buffer field if present
-    
+    -- To remove irrelevant fields, code would be:
+    -- map.lhsraw = nil
+    map.display_lhs=map.lhs:gsub(escaped_leader, "<Leader>")
+    if map.rhs and type(map.rhs) == "string" then
+      map.display_rhs=map.rhs:gsub(escaped_leader, "<Leader>")
+    else
+      map.display_rhs = map.rhs
+    end
     -- Add modes field based on mode_bits
     if map.mode_bits then
       map.modes = M.decode_mode_bits(map.mode_bits)
     else
       map.modes = map.mode
     end
-    map.mode = nil -- Remove mode field to avoid redundancy
-    map.mode_bits = nil -- Remove mode_bits field to avoid redundancy
-    
     if map.callback and type(map.callback) == "function" then
       local info = debug.getinfo(map.callback, "S")
       if info then
@@ -84,14 +79,21 @@ function M.get_keymaps()
         map.decoded_callback = string.format("%s", tostring(value))
       end
     end
-    map.callback = nil -- Remove callback field to avoid redundancy
+    
+    -- Create best_descr field with cascading logic
+    if map.desc and map.desc ~= "" then
+      map.best_descr = map.desc
+    elseif map.display_rhs and map.display_rhs ~= "" then
+      map.best_descr = map.display_rhs
+    elseif map.decoded_callback and map.decoded_callback ~= "" then
+      map.best_descr = map.decoded_callback
+    end
   end
-  
   -- Save keymaps to CSV
   M.save_keymaps_to_csv(keymaps, "/mnt/c/_a/insta/keymaps.csv")
   
   for _, map in ipairs(keymaps) do
-    print("Keymap:")
+    --print("Keymap:")
     for key, value in pairs(map) do
       -- Skip printing lhsraw and lhsrawalt
       if key == "lhsraw" or key == "lhsrawalt" then
@@ -100,7 +102,7 @@ function M.get_keymaps()
         -- print(string.format("  %s: %s", key, tostring(value)))
       end
     end
-    print("-------------------")
+    --print("-------------------")
   end
 
 -- Add more commands as needed
@@ -113,13 +115,13 @@ function M.escape_csv_value(value)
   end
   
   value = tostring(value)
-  -- Check if value starts with = (formula protection)
-  if value:match('^=') then
+  -- Check if value starts with = or + (formula protection)
+  if value:match('^[=+]') then
     -- Prefix with single quote to prevent formula execution
     value = "'" .. value
   end
-  -- Check if value contains quotes, commas, or newlines
-  if value:match('[",%c]') then
+  -- Check if value contains quotes, commas, semicolons, or newlines
+  if value:match('[",%c;]') then
     -- Replace double quotes with double double quotes and wrap in quotes
     value = '"' .. value:gsub('"', '""') .. '"'
   end
@@ -129,7 +131,7 @@ end
 
 -- Function to save keymaps to CSV file
 function M.save_keymaps_to_csv(keymaps, filepath)
-  -- Collect all possible field names
+  -- Collect all possible field names (keeping this for future use)
   local all_fields = {}
   for _, map in ipairs(keymaps) do
     for field, _ in pairs(map) do
@@ -141,6 +143,9 @@ function M.save_keymaps_to_csv(keymaps, filepath)
   
   -- Sort fields for consistent output
   table.sort(all_fields)
+  
+  -- Override with only the allowed fields for now
+  all_fields = {"modes", "display_lhs", "best_descr", "display_rhs", "desc", "decoded_callback"}
   
   -- Create CSV content
   local csv_lines = {}
