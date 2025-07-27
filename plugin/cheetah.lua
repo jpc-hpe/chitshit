@@ -11,10 +11,10 @@ end
 vim.g.loaded_cheetah = 1
 
 -- Define user commands if needed
-vim.api.nvim_create_user_command('CheetahHello', function()
-  require('cheetah').hello_world()
+vim.api.nvim_create_user_command('CheetahKeymaps', function()
+  require('cheetah.commands.keymaps').keymaps_cheatsheet()
 end, {
-  desc = "Say hello from cheetah plugin"
+  desc = "Create buffer with keymaps cheatsheet"
 })
 
 -- The plugin will need to be explicitly set up by the user in their config:

@@ -1,7 +1,6 @@
 -- Main module for cheetah Neovim plugin
 local M = {}
 local utils = require('cheetah.utils')
-local commands = require('cheetah.commands')
 
 -- Default configuration
 M.config = {
@@ -24,11 +23,6 @@ function M.setup(opts)
   if M.config.enabled then
     -- Add initialization code here
   end
-end
-
--- Add your plugin functions here
-function M.hello_world()
-  commands.hello_command()
 end
 
 -- Return the module
