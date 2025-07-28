@@ -3,7 +3,6 @@
 An experimental Lua plugin for Neovim showing cheat sheets.
 The repository is mostly intended for me to learn about neovim and lus, but if you find it useful, feel free to use it!
 
-
 ## Features
 
 - Keymaps cheat sheet. But for dynamic help you may prefer using [which-key.nvim](https://github.com/folke/which-key.nvim). It also shows ant end the available `<Leader>` combinations that you can use.
@@ -30,8 +29,6 @@ use {
   end
 }
 ```
-
-
 
 ### Using [vim-plug](https://github.com/junegunn/vim-plug) (UNTESTED)
 
@@ -62,6 +59,24 @@ require('cheetah').setup({
 
 - `:CheetahKeymaps` - Create buffer with keymaps cheatsheet
 
+## Key mappings
+
+No keymap is provided by default. I am personally planning to use `<Leader><Leader>c`+whatever as no other plugin is using the "double leader" combination. The following is what I have in my `~/.nvim/lua/config/keymaps.lua` (yes I use LazyVim):
+
+```lua
+vim.keymap.set(
+  'n',
+  '<Leader><Leader>ck',
+  ':CheetahKeymaps<CR>',
+  {
+    noremap = true,
+    silent = true,
+    desc = "Cheetah: Show keymaps cheatsheet"
+  }
+)
+
+```
+
 ## API
 
 - `require('cheetah').setup(opts)` - Initialize the plugin with options
@@ -70,5 +85,3 @@ require('cheetah').setup({
 ## License
 
 MIT License, see [LICENSE](LICENSE) for details.
-
-
