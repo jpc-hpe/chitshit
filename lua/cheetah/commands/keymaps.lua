@@ -286,10 +286,10 @@ function M.unused_prefixes(keymaps)
         end
     end
     
-    -- Check for <Leader><Leader> mapping
+    -- Check for <Leader><Leader> mapping or any mapping starting with <Leader><Leader>
     local leader_leader_found = false
     for _, mapped in ipairs(all_keys) do
-        if mapped == "<Leader><Leader>" then
+        if mapped:match("^<Leader><Leader>") then
             leader_leader_found = true
             break
         end
@@ -298,6 +298,10 @@ function M.unused_prefixes(keymaps)
     -- Check which letters (both lowercase and uppercase) are not used with <Leader> prefix
     local unused_lowercase = {}
     local unused_uppercase = {}
+    
+    -- For checking <Leader><Leader> combinations if <Leader><Leader> itself is already mapped
+    local leader_leader_unused_lowercase = {}
+    local leader_leader_unused_uppercase = {}
     
     -- Check lowercase letters (a-z)
     for i = 97, 122 do  -- ASCII a-z (lowercase)
@@ -335,17 +339,94 @@ function M.unused_prefixes(keymaps)
         end
     end
     
+    -- If <Leader><Leader> is mapped, check for <Leader><Leader>{key} combinations
+    if leader_leader_found then
+        -- Check lowercase letters for <Leader><Leader> combinations
+        for i = 97, 122 do  -- ASCII a-z (lowercase)
+            local key = string.char(i)
+            local found = false
+            
+            for _, mapped in ipairs(all_keys) do
+                -- Check if this mapping starts with "<Leader><Leader>" followed by the key
+                if mapped:match("^<Leader><Leader>" .. key) then
+                    found = true
+                    break
+                end
+            end
+            
+            if not found then
+                table.insert(leader_leader_unused_lowercase, key)
+            end
+        end
+        
+        -- Check uppercase letters for <Leader><Leader> combinations
+        for i = 65, 90 do  -- ASCII A-Z (uppercase)
+            local key = string.char(i)
+            local found = false
+            
+            for _, mapped in ipairs(all_keys) do
+                -- Check if this mapping starts with "<Leader><Leader>" followed by the key
+                if mapped:match("^<Leader><Leader>" .. key) then
+                    found = true
+                    break
+                end
+            end
+            
+            if not found then
+                table.insert(leader_leader_unused_uppercase, key)
+            end
+        end
+    end
+
     -- Format the output
     table.insert(lines, "Unused Leader Keys:")
     
     -- Report on <Leader><Leader>
     if not leader_leader_found then
-        table.insert(lines, "<Leader><Leader> is unused")
+        table.insert(lines, "<Leader><Leader> prefix is unused")
+    else
+        table.insert(lines, "<Leader><Leader> prefix is already in use")
+        
+        -- Report on <Leader><Leader> followed by lowercase letter keys
+        if #leader_leader_unused_lowercase > 0 then
+            table.insert(lines, "Unused <Leader><Leader> + lowercase combinations:")
+            local grouped_keys = {}
+            for i = 1, #leader_leader_unused_lowercase, 6 do  -- Group keys in sets of 6 for better readability
+                local group = {}
+                for j = i, math.min(i+5, #leader_leader_unused_lowercase) do
+                    table.insert(group, leader_leader_unused_lowercase[j])
+                end
+                table.insert(grouped_keys, "<Leader><Leader>" .. table.concat(group, ", <Leader><Leader>"))
+            end
+            for _, group in ipairs(grouped_keys) do
+                table.insert(lines, "  " .. group)
+            end
+        else
+            table.insert(lines, "All <Leader><Leader> + lowercase combinations are mapped")
+        end
+        
+        -- Report on <Leader><Leader> followed by uppercase letter keys
+        if #leader_leader_unused_uppercase > 0 then
+            table.insert(lines, "Unused <Leader><Leader> + uppercase combinations:")
+            local grouped_keys = {}
+            for i = 1, #leader_leader_unused_uppercase, 6 do  -- Group keys in sets of 6 for better readability
+                local group = {}
+                for j = i, math.min(i+5, #leader_leader_unused_uppercase) do
+                    table.insert(group, leader_leader_unused_uppercase[j])
+                end
+                table.insert(grouped_keys, "<Leader><Leader>" .. table.concat(group, ", <Leader><Leader>"))
+            end
+            for _, group in ipairs(grouped_keys) do
+                table.insert(lines, "  " .. group)
+            end
+        else
+            table.insert(lines, "All <Leader><Leader> + uppercase combinations are mapped")
+        end
     end
     
     -- Report on lowercase letter keys
     if #unused_lowercase > 0 then
-        table.insert(lines, "Lowercase:")
+        table.insert(lines, "Unused <Leader> + lowercase combinations:")
         local grouped_keys = {}
         for i = 1, #unused_lowercase, 6 do  -- Group keys in sets of 6 for better readability
             local group = {}
@@ -363,7 +444,7 @@ function M.unused_prefixes(keymaps)
     
     -- Report on uppercase letter keys
     if #unused_uppercase > 0 then
-        table.insert(lines, "Uppercase:")
+        table.insert(lines, "Unused <Leader> + uppercase combinations:")
         local grouped_keys = {}
         for i = 1, #unused_uppercase, 6 do  -- Group keys in sets of 6 for better readability
             local group = {}
