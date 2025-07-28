@@ -77,14 +77,18 @@ function M.keymaps_cheatsheet()
     end
 
     -- create reduced keymap list containing only modes, display_lhs and best_descr
+    -- exclude <Plug> mappings as they are internal
     local reduced_keymaps = {}
     for _, map in ipairs(keymaps) do
-        local reduced_map = {
-            modes = map.modes,
-            display_lhs = map.display_lhs,
-            best_descr = map.best_descr
-        }
-        table.insert(reduced_keymaps, reduced_map)
+        -- Skip mappings that start with "<Plug>"
+        if not (map.display_lhs and map.display_lhs:match("^<Plug>")) then
+            local reduced_map = {
+                modes = map.modes,
+                display_lhs = map.display_lhs,
+                best_descr = map.best_descr
+            }
+            table.insert(reduced_keymaps, reduced_map)
+        end
     end
     
     -- Consolidate entries with same display_lhs and best_descr by concatenanting modes
