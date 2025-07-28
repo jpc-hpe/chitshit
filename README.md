@@ -7,7 +7,7 @@ TODO: fix once repository has a final name
 
 ## Features
 
-- Simple "Hello World" functionality
+- Keymaps visualization functionality. But for dynamic help you may prefer using [which-key.nvim](https://github.com/folke/which-key.nvim)
 - Easily extensible architecture
 - Configurable through setup options
 
@@ -41,6 +41,7 @@ Plug 'jpc-hpe/testplugin.nvim'
 ```
 
 After installation, include in your configuration:
+
 ```lua
 require('cheetah').setup{}
 ```
@@ -58,12 +59,12 @@ require('cheetah').setup({
 
 ## Commands
 
-- `:CheetahHello` - Display a hello message from the plugin
+- `:CheetahKeymaps` - Create buffer with keymaps cheatsheet
 
 ## API
 
 - `require('cheetah').setup(opts)` - Initialize the plugin with options
-- `require('cheetah').hello_world()` - Display a hello message
+- `require('cheetah.commands.keymaps').keymaps_cheatsheet()` - Create buffer with keymaps cheatsheet
 
 ## License
 

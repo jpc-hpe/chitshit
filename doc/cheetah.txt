@@ -63,7 +63,7 @@ You can configure the plugin by passing options to the setup function:
 ==============================================================================
 4. Commands                                                *cheetah-commands*
 
-*:CheetahHello*  - Display a hello message from the plugin
+*:CheetahKeymaps*  - Create buffer with keymaps cheatsheet
 
 ==============================================================================
 5. API                                                        *cheetah-api*
@@ -73,8 +73,8 @@ You can configure the plugin by passing options to the setup function:
   Parameters:
     • {opts} - Table of configuration options (optional)
 
-*require('cheetah').hello_world()*
-  Display a hello message.
+*require('cheetah.commands.keymaps').keymaps_cheatsheet()*
+  Create a buffer with keymaps cheatsheet.
 
 ==============================================================================
 6. License                                                *cheetah-license*
