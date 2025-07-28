@@ -274,7 +274,7 @@ function M.save_keymaps_to_csv(keymaps)
     end
 end
 
--- Analyze keymaps to identify unused key prefixes
+-- Analyze keymaps to identify unused leader key mappings
 function M.unused_prefixes(keymaps)
     local lines = {}
     
@@ -286,42 +286,41 @@ function M.unused_prefixes(keymaps)
         end
     end
     
-    -- Define common prefixes to check
-    local prefixes = {
-        "<Leader>",
-        "g",
-        "z",
-        "[",
-        "]",
-        "<C-",  -- Control combinations
-        "<A-",  -- Alt combinations
-        "<M-"   -- Meta combinations
-    }
-    
-    -- Check which keys from A-Z are not used with each prefix
-    table.insert(lines, "Unused Keys by Prefix:")
-    
-    for _, prefix in ipairs(prefixes) do
-        local unused = {}
-        for i = 65, 90 do  -- ASCII A-Z
-            local key = string.char(i)
-            local found = false
-            
-            for _, mapped in ipairs(all_keys) do
-                if mapped == prefix .. key or mapped == prefix .. string.lower(key) then
-                    found = true
-                    break
-                end
-            end
-            
-            if not found then
-                table.insert(unused, key)
+    -- Check which lowercase letters a-z are not used with <Leader> prefix
+    local unused = {}
+    for i = 97, 122 do  -- ASCII a-z (lowercase)
+        local key = string.char(i)
+        local found = false
+        
+        for _, mapped in ipairs(all_keys) do
+            -- Check if this mapping starts with "<Leader>" followed by the key
+            if mapped:match("^<Leader>" .. key) then
+                found = true
+                break
             end
         end
         
-        if #unused > 0 then
-            table.insert(lines, prefix .. ": " .. table.concat(unused, ", "))
+        if not found then
+            table.insert(unused, key)
         end
+    end
+    
+    -- Format the output
+    table.insert(lines, "Unused Leader Keys:")
+    if #unused > 0 then
+        local grouped_keys = {}
+        for i = 1, #unused, 6 do  -- Group keys in sets of 6 for better readability
+            local group = {}
+            for j = i, math.min(i+5, #unused) do
+                table.insert(group, unused[j])
+            end
+            table.insert(grouped_keys, "<Leader>" .. table.concat(group, ", <Leader>"))
+        end
+        for _, group in ipairs(grouped_keys) do
+            table.insert(lines, group)
+        end
+    else
+        table.insert(lines, "All lowercase letter keys are mapped with <Leader>")
     end
     
     return lines
