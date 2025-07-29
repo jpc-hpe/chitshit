@@ -1,5 +1,5 @@
--- Commands implementation for cheetah plugin
-local utils = require('cheetah.utils')
+-- Commands implementation for chitshit plugin
+local utils = require('chitshit.utils')
 local M = {}
 
 -- Function to convert mode_bits to a string representation

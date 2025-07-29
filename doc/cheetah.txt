@@ -1,19 +1,19 @@
-*cheetah.txt*  Experimental Lua plugin for Neovim
+*chitshit.txt*  Experimental Lua plugin for Neovim
 
 ==============================================================================
-Table of Contents                                   *cheetah-table-of-contents*
+Table of Contents                                   *chitshit-table-of-contents*
 
-1. Introduction .................... |cheetah-introduction|
-2. Installation .................... |cheetah-installation|
-3. Configuration ................... |cheetah-configuration|
-4. Commands ........................ |cheetah-commands|
-5. API ............................ |cheetah-api|
-6. License ........................ |cheetah-license|
+1. Introduction .................... |chitshit-introduction|
+2. Installation .................... |chitshit-installation|
+3. Configuration ................... |chitshit-configuration|
+4. Commands ........................ |chitshit-commands|
+5. API ............................ |chitshit-api|
+6. License ........................ |chitshit-license|
 
 ==============================================================================
-1. Introduction                                        *cheetah-introduction*
+1. Introduction                                        *chitshit-introduction*
 
-cheetah is an experimental Lua plugin for Neovim showing cheat sheets.
+chitshit is an experimental Lua plugin for Neovim showing cheat sheets.
 The repository is mostly intended for learning about Neovim and Lua, but if 
 you find it useful, feel free to use it!
 
@@ -23,16 +23,16 @@ Features:
   combinations that you can use.
 
 ==============================================================================
-2. Installation                                        *cheetah-installation*
+2. Installation                                        *chitshit-installation*
 
 You can install this plugin using your favorite plugin manager:
 
 * With packer.nvim (UNTESTED):
 >
     use {
-      'jpc-hpe/cheetah.nvim',
+      'jpc-hpe/chitshit.nvim',
       config = function()
-        require('cheetah').setup{}
+        require('chitshit').setup{}
       end
     }
 <
@@ -40,53 +40,53 @@ You can install this plugin using your favorite plugin manager:
 * With lazy.nvim (TESTED):
 >
     {
-      "jpc-hpe/cheetah.nvim",
-      name="cheetah",
+      "jpc-hpe/chitshit.nvim",
+      name="chitshit",
       opts = {},
     }     
 <
 
 * With vim-plug (UNTESTED):
 >
-    Plug 'jpc-hpe/cheetah.nvim'
+    Plug 'jpc-hpe/chitshit.nvim'
 <
     After installation, include in your configuration:
 >
-    lua require('cheetah').setup{}
+    lua require('chitshit').setup{}
 <
 
 With lazy.nvim, you do not need this explicitly, as it already happens if you
 have `opts` in the spec.
 
 ==============================================================================
-3. Configuration                                      *cheetah-configuration*
+3. Configuration                                      *chitshit-configuration*
 
 You can configure the plugin by passing options to the setup function:
 >
-    require('cheetah').setup({
+    require('chitshit').setup({
       enabled = true,
       -- Add more configuration options as needed
     })
 <
 
 ==============================================================================
-4. Commands                                                *cheetah-commands*
+4. Commands                                                *chitshit-commands*
 
-*:CheetahKeymaps*  - Create buffer with keymaps cheatsheet
+*:ChitshitKeymaps*  - Create buffer with keymaps cheatsheet
 
 ==============================================================================
-5. API                                                        *cheetah-api*
+5. API                                                        *chitshit-api*
 
-*require('cheetah').setup(opts)*
+*require('chitshit').setup(opts)*
   Initialize the plugin with the given options.
   Parameters:
     • {opts} - Table of configuration options (optional)
 
-*require('cheetah.commands.keymaps').keymaps_cheatsheet()*
+*require('chitshit.commands.keymaps').keymaps_cheatsheet()*
   Create a buffer with keymaps cheatsheet.
 
 ==============================================================================
-6. License                                                *cheetah-license*
+6. License                                                *chitshit-license*
 
 MIT License
 Copyright (c) 2025 Juan Postlbauer

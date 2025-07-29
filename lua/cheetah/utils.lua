@@ -1,10 +1,10 @@
--- Utility functions for the cheetah plugin
+-- Utility functions for the chitshit plugin
 local M = {}
 
 -- Simple utility function to print a formatted message
 function M.print_message(msg, level)
   level = level or "info"
-  local prefix = "[cheetah] "
+  local prefix = "[chitshit] "
   
   if level == "error" then
     vim.api.nvim_err_writeln(prefix .. msg)

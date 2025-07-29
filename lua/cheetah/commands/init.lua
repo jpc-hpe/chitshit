@@ -1,4 +1,4 @@
--- Commands implementation for cheetah plugin
+-- Commands implementation for chitshit plugin
 local M = {}
 
 -- Return the module

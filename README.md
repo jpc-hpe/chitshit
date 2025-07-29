@@ -1,11 +1,14 @@
-# cheetah Neovim Plugin
+# chitshit Neovim Plugin
 
 An experimental Lua plugin for Neovim showing cheat sheets.
 The repository is mostly intended for me to learn about neovim and lus, but if you find it useful, feel free to use it!
 
+The original name was cheetah, but then I found that there is already a plugin with that name. The current name _chitshit_ is pronounced like "cheat sheet".
+
+
 ## Features
 
-- Keymaps cheat sheet. But for dynamic help you may prefer using [which-key.nvim](https://github.com/folke/which-key.nvim). It also shows ant end the available `<Leader>` combinations that you can use.
+- Keymaps cheat sheet. But for dynamic help you may prefer using [which-key.nvim](https://github.com/folke/which-key.nvim). It also shows at the end the available `<Leader>` combinations that you can use.
 
 ## Installation
 
@@ -13,8 +16,7 @@ The repository is mostly intended for me to learn about neovim and lus, but if y
 
 ```lua
 {
-  "jpc-hpe/cheetah.nvim",
-  name="cheetah",
+  "jpc-hpe/chitshit.nvim",
   opts = {},
 }    
 ```
@@ -23,9 +25,9 @@ The repository is mostly intended for me to learn about neovim and lus, but if y
 
 ```lua
 use {
-  'jpc-hpe/cheetah.nvim',
+  'jpc-hpe/chitshit.nvim',
   config = function()
-    require('cheetah').setup{}
+    require('chitshit').setup{}
   end
 }
 ```
@@ -33,13 +35,13 @@ use {
 ### Using [vim-plug](https://github.com/junegunn/vim-plug) (UNTESTED)
 
 ```vim
-Plug 'jpc-hpe/cheetah.nvim'
+Plug 'jpc-hpe/chitshit.nvim'
 ```
 
 After installation, include in your configuration:
 
 ```lua
-require('cheetah').setup{}
+require('chitshit').setup{}
 ```
 
 With lazy.nvim, you do not need this explicitly, as it already happens if you have `opts` in the spec
@@ -49,7 +51,7 @@ With lazy.nvim, you do not need this explicitly, as it already happens if you ha
 You can configure the plugin by passing options to the setup function:
 
 ```lua
-require('cheetah').setup({
+require('chitshit').setup({
   enabled = true,
   -- Add more configuration options as needed
 })
@@ -57,7 +59,7 @@ require('cheetah').setup({
 
 ## Commands
 
-- `:CheetahKeymaps` - Create buffer with keymaps cheatsheet
+- `:ChitshitKeymaps` - Create buffer with keymaps cheatsheet
 
 ## Key mappings
 
@@ -67,11 +69,11 @@ No keymap is provided by default. I am personally planning to use `<Leader><Lead
 vim.keymap.set(
   'n',
   '<Leader><Leader>ck',
-  ':CheetahKeymaps<CR>',
+  ':ChitshitKeymaps<CR>',
   {
     noremap = true,
     silent = true,
-    desc = "Cheetah: Show keymaps cheatsheet"
+    desc = "Chitshit: Show keymaps cheatsheet"
   }
 )
 
@@ -79,8 +81,8 @@ vim.keymap.set(
 
 ## API
 
-- `require('cheetah').setup(opts)` - Initialize the plugin with options
-- `require('cheetah.commands.keymaps').keymaps_cheatsheet()` - Create buffer with keymaps cheatsheet
+- `require('chitshit').setup(opts)` - Initialize the plugin with options
+- `require('chitshit.commands.keymaps').keymaps_cheatsheet()` - Create buffer with keymaps cheatsheet
 
 ## License
 

@@ -1,6 +1,6 @@
--- Main module for cheetah Neovim plugin
+-- Main module for chitshit Neovim plugin
 local M = {}
-local utils = require('cheetah.utils')
+local utils = require('chitshit.utils')
 
 -- Default configuration
 M.config = {
