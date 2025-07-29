@@ -395,9 +395,9 @@ function M.unused_prefixes(keymaps)
         if #leader_leader_unused_lowercase > 0 then
             table.insert(lines, "Unused <Leader><Leader> + lowercase combinations:")
             local grouped_keys = {}
-            for i = 1, #leader_leader_unused_lowercase, 6 do  -- Group keys in sets of 6 for better readability
+            for i = 1, #leader_leader_unused_lowercase, 4 do  -- Group keys in sets of 4 for better readability
                 local group = {}
-                for j = i, math.min(i+5, #leader_leader_unused_lowercase) do
+                for j = i, math.min(i+3, #leader_leader_unused_lowercase) do
                     table.insert(group, leader_leader_unused_lowercase[j])
                 end
                 table.insert(grouped_keys, "<Leader><Leader>" .. table.concat(group, ", <Leader><Leader>"))
@@ -413,9 +413,9 @@ function M.unused_prefixes(keymaps)
         if #leader_leader_unused_uppercase > 0 then
             table.insert(lines, "Unused <Leader><Leader> + uppercase combinations:")
             local grouped_keys = {}
-            for i = 1, #leader_leader_unused_uppercase, 6 do  -- Group keys in sets of 6 for better readability
+            for i = 1, #leader_leader_unused_uppercase, 4 do  -- Group keys in sets of 4 for better readability
                 local group = {}
-                for j = i, math.min(i+5, #leader_leader_unused_uppercase) do
+                for j = i, math.min(i+3, #leader_leader_unused_uppercase) do
                     table.insert(group, leader_leader_unused_uppercase[j])
                 end
                 table.insert(grouped_keys, "<Leader><Leader>" .. table.concat(group, ", <Leader><Leader>"))
