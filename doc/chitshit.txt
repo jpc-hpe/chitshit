@@ -27,6 +27,14 @@ Features:
 
 You can install this plugin using your favorite plugin manager:
 
+* With lazy.nvim (TESTED):
+>
+    {
+      "jpc-hpe/chitshit.nvim",
+      opts = {},
+    }     
+<
+
 * With packer.nvim (UNTESTED):
 >
     use {
@@ -35,15 +43,6 @@ You can install this plugin using your favorite plugin manager:
         require('chitshit').setup{}
       end
     }
-<
-
-* With lazy.nvim (TESTED):
->
-    {
-      "jpc-hpe/chitshit.nvim",
-      name="chitshit",
-      opts = {},
-    }     
 <
 
 * With vim-plug (UNTESTED):
