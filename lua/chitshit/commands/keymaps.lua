@@ -133,9 +133,9 @@ end
 function M.dump_to_buffer(keymaps)
     -- Create a new buffer to display the keymaps
     local buf = vim.api.nvim_create_buf(false, true) -- Create new buffer (not listed, scratch)
-    vim.api.nvim_buf_set_option(buf, 'buftype', 'nofile')
-    vim.api.nvim_buf_set_option(buf, 'bufhidden', 'wipe')
-    vim.api.nvim_buf_set_option(buf, 'swapfile', false)
+    vim.api.nvim_set_option_value('buftype', 'nofile', {buf = buf})
+    vim.api.nvim_set_option_value('bufhidden', 'wipe', {buf = buf})
+    vim.api.nvim_set_option_value('swapfile', false, {buf = buf})
     vim.api.nvim_buf_set_name(buf, 'Keymaps')
 
     -- Calculate maximum column widths
@@ -210,8 +210,8 @@ function M.dump_to_buffer(keymaps)
     vim.api.nvim_win_set_buf(0, buf)
 
     -- Set buffer as readonly
-    vim.api.nvim_buf_set_option(buf, 'modifiable', false)
-    vim.api.nvim_buf_set_option(buf, 'readonly', true)
+    -- vim.api.nvim_set_option_value('modifiable', false, {buf = buf})
+    -- vim.api.nvim_set_option_value('readonly', true, {buf = buf})
 end
 
 -- Function to escape CSV values for excel
