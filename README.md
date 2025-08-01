@@ -1,14 +1,15 @@
 # chitshit Neovim Plugin
 
 An experimental Lua plugin for Neovim showing cheat sheets.
-The repository is mostly intended for me to learn about neovim and lus, but if you find it useful, feel free to use it!
+The repository is mostly intended for me to learn about neovim and lua, but if you find it useful, feel free to use it!
 
 The original name was cheetah, but then I found that there is already a plugin with that name. The current name _chitshit_ is pronounced like "cheat sheet".
 
-
 ## Features
 
-- Keymaps cheat sheet. But for dynamic help you may prefer using [which-key.nvim](https://github.com/folke/which-key.nvim). It also shows at the end the available `<Leader>` combinations that you can use.
+- Keymaps cheat sheet. But for dynamic help you may prefer using [which-key.nvim](https://github.com/folke/which-key.nvim).
+  - It also shows at the end the available `<Leader>` combinations that you can use.
+  - And it also shows you at the beginning your current `<Leader>` key
 
 ## Installation
 
@@ -18,7 +19,7 @@ The original name was cheetah, but then I found that there is already a plugin w
 {
   "jpc-hpe/chitshit.nvim",
   opts = {},
-}    
+}
 ```
 
 ### Using [packer.nvim](https://github.com/wbthomason/packer.nvim) (UNTESTED)
@@ -63,7 +64,9 @@ require('chitshit').setup({
 
 ## Key mappings
 
-No keymap is provided by default. I am personally planning to use `<Leader><Leader>c`+whatever as no other plugin is using the "double leader" combination. The following is what I have in my `~/.nvim/lua/config/keymaps.lua` (yes I use LazyVim):
+No keymap is provided by default.
+I am personally planning to use `<Leader><Leader>c`+whatever as no other plugin is using the "double leader" combination.
+The following is what I have in my `~/.nvim/lua/config/keymaps.lua` (yes, I use LazyVim):
 
 ```lua
 vim.keymap.set(
