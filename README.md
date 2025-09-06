@@ -1,5 +1,7 @@
 # chitshit Neovim Plugin
 
+NOTE: Since the creation of this plugin I found that it not only overlaps with which-key, but also with `:FzfLua keymaps`. I will probably not work further on the plugin.
+
 An experimental Lua plugin for Neovim showing cheat sheets.
 The repository is mostly intended for me to learn about neovim and lua, but if you find it useful, feel free to use it!
 
